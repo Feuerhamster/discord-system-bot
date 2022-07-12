@@ -127,7 +127,7 @@ export default function(client: Client, config: ConfigFile, storage: NodePersist
 			let mod = await interaction.guild?.members.fetch(modId);
 
 			try {
-				await mod?.send(`✅ Dein bearbeitetes Ticket vom **${d}** mit dem Thema **${topic}** von dem User **${mod?.user.toString()}** auf dem Server **${interaction.guild?.name}** wurde geschlossen`);
+				await mod?.send(`✅ Dein bearbeitetes Ticket vom **${d}** mit dem Thema **${topic}** von dem User **${creator?.user.toString()}** auf dem Server **${interaction.guild?.name}** wurde geschlossen`);
 			} catch(e) {
 				console.log("⚠ Can't sent message to user: user blocked dms");
 			}
