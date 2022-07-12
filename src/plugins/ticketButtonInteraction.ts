@@ -17,16 +17,15 @@ export default function(client: Client, config: ConfigFile, storage: NodePersist
 		await storage.setItem("user-" + name, interaction.user.id);
 
 		let channel = await interaction.guild?.channels.create(name, {
-			permissionOverwrites: [
-				{
-					id: interaction.user.id,
-					allow: ["VIEW_CHANNEL", "SEND_MESSAGES"],
-				}
-			],
 			parent: config.ticketCategory
 		});
 
 		await channel?.lockPermissions();
+
+		await channel?.permissionOverwrites.edit(interaction.user.id, {
+			VIEW_CHANNEL: true,
+			SEND_MESSAGES: true
+		});
 
 		interaction.reply({
 			content: "✅ Ein Ticket wurde für dich erstellt",
@@ -88,7 +87,10 @@ export default function(client: Client, config: ConfigFile, storage: NodePersist
 		let user = await interaction.guild?.members.fetch(interaction.user.id);
 
 		if(!user?.roles.cache.hasAny(...config.moderationRoleIds)) {
-			await interaction.reply("⚠ Nur Teammitglieder können sich für das Bearbeiten von Tickets melden");
+			await interaction.reply({
+				content: "⚠ Nur Teammitglieder können sich für das Bearbeiten von Tickets melden",
+				ephemeral: true
+			});
 			return;
 		}
 
@@ -123,11 +125,20 @@ export default function(client: Client, config: ConfigFile, storage: NodePersist
 
 		if (modId) {
 			let mod = await interaction.guild?.members.fetch(modId);
-			await mod?.send(`✅ Dein bearbeitetes Ticket vom **${d}** mit dem Thema **${topic}** von dem User **${mod?.user.toString()}** auf dem Server **${interaction.guild?.name}** wurde geschlossen`);
+
+			try {
+				await mod?.send(`✅ Dein bearbeitetes Ticket vom **${d}** mit dem Thema **${topic}** von dem User **${mod?.user.toString()}** auf dem Server **${interaction.guild?.name}** wurde geschlossen`);
+			} catch(e) {
+				console.log("⚠ Can't sent message to user: user blocked dms");
+			}
 		}
 		
-		await creator?.send(`✅ Dein Ticket vom **${d}** mit dem Thema **${topic}** auf dem Server **${interaction.guild?.name}** wurde geschlossen`);
-
+		try {
+			await creator?.send(`✅ Dein Ticket vom **${d}** mit dem Thema **${topic}** auf dem Server **${interaction.guild?.name}** wurde geschlossen`);
+		} catch(e) {
+			console.log("⚠ Can't sent message to user: user blocked dms");
+		}
+		
 		await interaction.channel?.delete();
 
 		await storage.removeItem("user-" + <string>c?.name);
