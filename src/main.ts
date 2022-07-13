@@ -3,7 +3,7 @@ import fs from "fs";
 import type { ConfigFile } from "./types/config";
 import storage from "node-persist";
 import createTicketPanelPlugin from "./plugins/createTicketPanel.js";
-import ticketButtonInteractionsPlugin from "./plugins/ticketButtonInteractions.js";
+import ticketManagerPlugin from "./plugins/ticketManager.js";
 
 const config: ConfigFile = JSON.parse(fs.readFileSync("./config.json").toString("utf-8"));
 
@@ -17,10 +17,12 @@ const client = new Client({
 	]
 });
 
+client.setMaxListeners(0);
+
 client.once("ready", () => console.log("✅ Client Ready"));
 
 // Init plugins
 new createTicketPanelPlugin(client, config, storage);
-new ticketButtonInteractionsPlugin(client, config, storage);
+new ticketManagerPlugin(client, config, storage);
 
 client.login(config.token);

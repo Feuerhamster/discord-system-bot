@@ -3,14 +3,14 @@ import type { KeysUnion, KeyValues } from "../types/common";
 const texts = {
 	ticket: {
 		created: "🏷 Ein Ticket wurde für dich erstellt",
-		onlyTeam: "⚠ Nur Teammitglieder können sich für das Bearbeiten von Tickets melden",
-		claimed: "✋ {user} hat sich für die Bearbeitung dieses Tickets gemeldet",
-		closedCreatorMSG: "🏷 Dein Ticket vom **{date}** mit dem Thema **{topic}** auf dem Server **{guild}** wurde geschlossen",
-		closedModMSG: "🏷 Dein bearbeitetes Ticket vom **{date}** mit dem Thema **{topic}** von dem User **{creator}** auf dem Server **{guild}** wurde geschlossen"
+		claimed: "🏷️ {user} hat sich für die Bearbeitung dieses Tickets gemeldet",
+		closed: "🔒 Das Ticket wurde von {user} geschlossen",
+		closedCreatorMSG: "🔒 Dein Ticket vom **{date}** mit dem Thema **{topic}** auf dem Server **{guild}** wurde geschlossen"
 	},
 	error: {
 		blockedDM: "⚠ Can't sent message to user: user blocked dms",
-		requiredArgs: "⚠ Der Command **{name}** benötigt mindestens **{requiredArgs} argumente**"
+		requiredArgs: "⚠ Der Command **{name}** benötigt mindestens **{requiredArgs} argumente**",
+		onlyTeam: "⚠ Nur Teammitglieder können diese Aktion ausführen"
 	}
 } as const;
 

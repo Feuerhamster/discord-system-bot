@@ -5,7 +5,6 @@ export interface ConfigFile {
 	ticketPanels: {
 		[key: string]: TicketPanel
 	};
-	commandPrefix: string;
 	embedColor: ColorResolvable;
 	moderationRoleIds: string[];
 	ticketCategory: string;
