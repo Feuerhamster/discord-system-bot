@@ -1,4 +1,4 @@
-import { ButtonInteraction, MessageActionRow, MessageButton, MessageEmbed, Modal, ModalSubmitInteraction, TextInputComponent } from "discord.js";
+import { ButtonInteraction, MessageActionRow, MessageButton, MessageEmbed, Modal, ModalSubmitInteraction, TextChannel, TextInputComponent } from "discord.js";
 import { TicketPanel } from "../types/config";
 import { customAlphabet } from "nanoid";
 import PluginBase, { PluginConstructorModules } from "../core/pluginBase.js";
@@ -82,9 +82,11 @@ export default class TicketButtonInteractions extends PluginBase {
 					.setEmoji("🏷️")
 			);
 
-		let msg = `<@${interaction.user.id}> ${this.config.moderationRoleIds.map(i => `<@&${i}>`).join(" ")}`;
+		const msg = `<@${interaction.user.id}> ${this.config.moderationRoleIds.map(i => `<@&${i}>`).join(" ")}`;
 
-		channel?.send({ content: msg, embeds: [embed], components: [row] });
+		const message = await channel?.send({ content: msg, embeds: [embed], components: [row] });
+
+		await this.storage.setItem(`ticket-${newChannelName}-firstMsgId`, message?.id);
 	}
 
 	async claimTicket(interaction: ButtonInteraction) {
@@ -125,6 +127,7 @@ export default class TicketButtonInteractions extends PluginBase {
 
 		await this.storage.removeItem(`ticket-${channelName}-creatorId`);
 		await this.storage.removeItem(`ticket-${channelName}-modId`);
+		await this.storage.removeItem(`ticket-${channelName}-firstMsgId`);
 	}
 
 	async requestCloseTicket(interaction: ButtonInteraction) {
@@ -142,7 +145,7 @@ export default class TicketButtonInteractions extends PluginBase {
 		const modalActionRow = new MessageActionRow().addComponents(reasonTextInput as any);
 		
 		// any cast: bad types
-		modal.addComponents(modalActionRow as any)
+		modal.addComponents(modalActionRow as any);
 
 		await interaction.showModal(modal);
 	}
@@ -159,7 +162,15 @@ export default class TicketButtonInteractions extends PluginBase {
 		try {
 			const creator = interaction.guild?.members.cache.get(creatorId);
 			const date = channel?.createdAt?.toLocaleDateString("de-DE");
-			const topic = channelName.split("-")[0];
+			const ticketType = channelName.split("-")[0];
+
+			let topic = null;
+
+			if (ticketType in this.config.ticketTypes && this.config.ticketTypes[ticketType] !== null) {
+				topic = this.config.ticketTypes[ticketType].title;
+			} else {
+				topic = this.config.ticketPanels[ticketType].title;
+			}
 
 			const msg = `${ $t("ticket.closedCreatorMSG", { date, topic, guild: interaction.guild?.name }) }\n\n**Schließungsgrund:** ${reason}`;
 
@@ -187,6 +198,12 @@ export default class TicketButtonInteractions extends PluginBase {
 		});
 		
 		await interaction.channel?.send({ components: [row] });
+
+		try {
+			const msgId = await this.storage.getItem(`ticket-${channelName}-firstMsgId`);
+			const msg = await (channel as TextChannel).messages.fetch(msgId);
+			await msg.edit({ content: msg.content, embeds: msg.embeds, components: [] });
+		} catch(e) {}
 
 		interaction.deferUpdate();
 	}
