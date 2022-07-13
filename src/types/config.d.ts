@@ -2,8 +2,8 @@ import type { ColorResolvable } from "discord.js";
 
 export interface ConfigFile {
 	token: string;
-	ticketMessages: {
-		[key: string]: TicketMessage
+	ticketPanels: {
+		[key: string]: TicketPanel
 	};
 	commandPrefix: string;
 	embedColor: ColorResolvable;
@@ -15,7 +15,7 @@ export interface ConfigFile {
 	storageDir: string;
 }
 
-export interface TicketMessage {
+export interface TicketPanel {
 	title: string;
 	description: string;
 	buttons: Button[];
