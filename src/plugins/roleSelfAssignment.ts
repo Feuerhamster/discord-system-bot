@@ -28,6 +28,7 @@ export default class RoleSelfAssignment extends PluginBase {
 		if (rp.multiple) {
 			selectMenu.setMaxValues(rp.options.length);
 			selectMenu.setMinValues(0);
+			selectMenu.setPlaceholder($t("selfRoleAssignment.selectInputPlaceholderMultiple"));
 		}
 
 		let row = new MessageActionRow()

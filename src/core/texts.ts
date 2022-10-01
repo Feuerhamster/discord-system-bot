@@ -8,7 +8,8 @@ const texts = {
 		closedCreatorMSG: "🔒 Dein Ticket vom **{date}** mit dem Thema **{topic}** auf dem Server **{guild}** wurde geschlossen"
 	},
 	selfRoleAssignment: {
-		selectInputPlaceholder: "Wähle deine Rolle(n) aus...",
+		selectInputPlaceholder: "Wähle eine Option aus...",
+		selectInputPlaceholderMultiple: "Wähle mehrere Optionen aus...",
 		updated: "✅ Deine Rollen wurden entsprechend deiner Auswahl aktualisiert"
 	},
 	error: {
