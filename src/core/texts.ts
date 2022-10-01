@@ -7,6 +7,10 @@ const texts = {
 		closed: "🔒 Das Ticket wurde von {user} geschlossen",
 		closedCreatorMSG: "🔒 Dein Ticket vom **{date}** mit dem Thema **{topic}** auf dem Server **{guild}** wurde geschlossen"
 	},
+	selfRoleAssignment: {
+		selectInputPlaceholder: "Wähle deine Rolle(n) aus...",
+		updated: "✅ Deine Rollen wurden entsprechend deiner Auswahl aktualisiert"
+	},
 	error: {
 		blockedDM: "⚠ Can't sent message to user: user blocked dms",
 		requiredArgs: "⚠ Der Command **{name}** benötigt mindestens **{requiredArgs} argumente**",

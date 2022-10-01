@@ -1,4 +1,4 @@
-import type { ColorResolvable } from "discord.js";
+import type { ColorResolvable, MessageSelectOptionData } from "discord.js";
 
 export interface ConfigFile {
 	token: string;
@@ -12,6 +12,9 @@ export interface ConfigFile {
 		[key: string]: TicketType
 	},
 	storageDir: string;
+	selfRoleAssignmentPanels: {
+		[key: string]: SelfRoleAssignmentPanel
+	},
 }
 
 export interface TicketPanel {
@@ -29,4 +32,11 @@ export interface Button {
 	id: string;
 	label: string;
 	icon: string;
+}
+
+export interface SelfRoleAssignmentPanel {
+	title: string;
+	description: string;
+	multiple?: boolean;
+	options: MessageSelectOptionData[];
 }

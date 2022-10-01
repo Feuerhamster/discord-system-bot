@@ -1,4 +1,4 @@
-import { ButtonInteraction, Client, Interaction, Message, ModalSubmitInteraction } from "discord.js";
+import { ButtonInteraction, Client, Interaction, Message, ModalSubmitInteraction, SelectMenuInteraction } from "discord.js";
 import NodePersist from "node-persist";
 import { ConfigFile } from "../types/config";
 import $t from "./texts.js";
@@ -12,6 +12,12 @@ export default class PluginBase {
 		protected storage: NodePersist.LocalStorage
 	) {}
 
+	/**
+	 * Register a new command
+	 * @param name command name
+	 * @param requiredArgs number of arguments
+	 * @param callback callback function when command is triggered
+	 */
 	protected registerCommand(name: string, requiredArgs: number, callback: (args: string[], msg: Message) => void) {
 		this.client.on("messageCreate", async (msg: Message) => {
 
@@ -34,6 +40,11 @@ export default class PluginBase {
 		});
 	}
 
+	/**
+	 * Register a button click event
+	 * @param triggerIds ID's to listen on
+	 * @param callback callback function when button is triggered
+	 */
 	protected registerButtonEvent(triggerIds: string[], callback: (interaction: ButtonInteraction) => void) {
 		this.client.on("interactionCreate", async (interaction: Interaction) => {
 			if (!interaction.isButton()) return;
@@ -43,6 +54,25 @@ export default class PluginBase {
 		});
 	}
 
+	/**
+	 * Register a select menu selection
+	 * @param triggerIds ID's to listen on
+	 * @param callback callback function when selected
+	 */
+	 protected registerSelectionEvent(triggerIds: string[], callback: (interaction: SelectMenuInteraction) => void) {
+		this.client.on("interactionCreate", async (interaction: Interaction) => {
+			if (!interaction.isSelectMenu()) return;
+			if (!triggerIds.includes(interaction.customId)) return;
+
+			callback(interaction);
+		});
+	}
+
+	/**
+	 * Register a form submit event
+	 * @param triggerIds ID's to listen on
+	 * @param callback callback function when form is triggered
+	 */
 	protected registerFormSubmit(triggerIds: string[], callback: (interaction: ModalSubmitInteraction) => void) {
 		this.client.on("interactionCreate", async (interaction: Interaction) => {
 			if (!interaction.isModalSubmit()) return;

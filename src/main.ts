@@ -4,6 +4,7 @@ import type { ConfigFile } from "./types/config";
 import storage from "node-persist";
 import createTicketPanelPlugin from "./plugins/createTicketPanel.js";
 import ticketManagerPlugin from "./plugins/ticketManager.js";
+import roleSelfAssignmentPlugin from "./plugins/roleSelfAssignment.js";
 
 const config: ConfigFile = JSON.parse(fs.readFileSync("./config.json").toString("utf-8"));
 
@@ -24,5 +25,6 @@ client.once("ready", () => console.log("✅ Client Ready"));
 // Init plugins
 new createTicketPanelPlugin(client, config, storage);
 new ticketManagerPlugin(client, config, storage);
+new roleSelfAssignmentPlugin(client, config, storage);
 
 client.login(config.token);

@@ -6,7 +6,8 @@
 	"type": "module",
 	"scripts": {
 		"start": "node dist/main.js",
-		"build": "tsc"
+		"build": "tsc",
+		"dev": "tsc && node dist/main.js"
 	},
 	"author": "Feuerhamster",
 	"license": "ISC",
