@@ -1,4 +1,4 @@
-import { ButtonInteraction, MessageActionRow, MessageButton, MessageEmbed, Modal, ModalSubmitInteraction, TextChannel, TextInputComponent } from "discord.js";
+import { ButtonInteraction, GuildTextBasedChannel, MessageActionRow, MessageButton, MessageEmbed, Modal, ModalSubmitInteraction, TextChannel, TextInputComponent } from "discord.js";
 import { TicketPanel } from "../types/config";
 import { customAlphabet } from "nanoid";
 import PluginBase, { PluginConstructorModules } from "../core/pluginBase.js";
@@ -192,7 +192,7 @@ export default class TicketButtonInteractions extends PluginBase {
 
 		await interaction.channel?.send({ content: msg });
 
-		await channel?.permissionOverwrites.edit(creatorId, {
+		await (channel as TextChannel)?.permissionOverwrites.edit(creatorId, {
 			SEND_MESSAGES: false,
 			VIEW_CHANNEL: false
 		});
