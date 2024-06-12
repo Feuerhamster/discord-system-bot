@@ -19,7 +19,7 @@ const texts = {
 		onlyTeam: "⚠ Nur Teammitglieder können diese Aktion ausführen",
 	},
 	flaggingSystem: {
-		modNotice: "🚩 {mentions} Eine Nachricht wurde wurde geflagged {link}",
+		modNotice: "🚩 Eine Nachricht wurde von einem Mitglied geflagged {link}",
 		userNotice:
 			"🚩 {mention} Deine Nachricht wurde aufgrund von mehrfachem flagging durch Mitglieder entfernt. Möglicherweise verstieß dein Inhalt gegen die Regeln oder hat andere Mitglieder getriggert.",
 		modSolved:

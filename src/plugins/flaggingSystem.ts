@@ -37,12 +37,9 @@ export default class FlaggingSystem extends PluginBase {
 		if (count === 1) {
 			const messageURL = interaction.message.url;
 
-			const mentions = this.config.moderationRoleIds.reduce((prev, curr) => prev + `<@&${curr}>`);
-
 			modChannel.send(
 				$t("flaggingSystem.modNotice", {
 					link: messageURL,
-					mentions,
 				}),
 			);
 
