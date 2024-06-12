@@ -18,6 +18,7 @@ export interface ConfigFile {
 	flaggingSystem: {
 		emoji: string;
 		reportChannel: string;
+		ignoreChannels: string[];
 	};
 }
 

@@ -12,6 +12,8 @@ export default class FlaggingSystem extends PluginBase {
 	async onMessageReaction(interaction: MessageReaction, user: User | PartialUser) {
 		if (interaction.emoji.name !== this.config.flaggingSystem.emoji) return;
 
+		if (this.config.flaggingSystem.ignoreChannels.includes(interaction.message.channel.id)) return;
+
 		const count = interaction.message.reactions.cache.get(this.config.flaggingSystem.emoji)?.count;
 
 		if (!count) return;
